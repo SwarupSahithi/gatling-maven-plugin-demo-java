@@ -1,15 +1,14 @@
-# Use lightweight JDK base image
+# Stage 1: Build the JAR
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+
+WORKDIR /build
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Stage 2: Create runtime container
 FROM eclipse-temurin:17-jdk-alpine
 
-# Set the working directory inside the container
 WORKDIR /app
+COPY --from=builder /build/target/gatling-maven-plugin-demo-java-3.9.0.jar /app/
 
-# Copy the Gatling fat JAR into the container
-COPY target/gatling-maven-plugin-demo-java-3.9.0.jar /app/
-
-
-# Optional: expose any port if needed for monitoring (not typically needed for headless Gatling)
-EXPOSE 8080
-
-# Default command to run the Gatling simulation
 CMD ["java", "-jar", "gatling-maven-plugin-demo-java-3.9.0.jar"]
