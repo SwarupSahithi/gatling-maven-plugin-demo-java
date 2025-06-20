@@ -5,7 +5,8 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copy the Gatling fat JAR into the container
-COPY gatling-maven-plugin-demo-java-3.9.0.jar /app/
+COPY target/gatling-maven-plugin-demo-java-3.9.0.jar /app/
+
 
 # Optional: expose any port if needed for monitoring (not typically needed for headless Gatling)
 EXPOSE 8080
